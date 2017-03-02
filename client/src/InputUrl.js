@@ -20,7 +20,12 @@ export default class InputUrl extends Component {
   };
 
   startCrawl = () => {
-    this.setState({ isFetching: true, isFetched: false });
+    this._input.blur();
+    this.setState({
+      isFetching: true,
+      isFetched: false,
+      isFetchError: false
+    });
     crawl(this.state.currentUrl).then(html => {
       const phoneData = parsePhoneData(cheerio.load(html));
       const phoneName = phoneData[0].value;
@@ -64,9 +69,7 @@ export default class InputUrl extends Component {
     const { isValid, isFetching, isFetchError, isFetched } = this.state;
     const contentReady = !isFetching && isFetched;
     const inputProps = {
-      ref: (input) => {
-        this._input = input;
-      },
+      icon: true,
       fluid: true,
       error: (!isValid || isFetchError) && !isFetching,
       loading: isFetching,
@@ -74,16 +77,20 @@ export default class InputUrl extends Component {
       placeholder: 'Input phone url',
       onChange: this.onChange
     }
+    let iconElement;
     if (contentReady) {
-      inputProps.icon = <Icon name='check' color='green' />;
+      iconElement = <Icon name='check' color='green' />;
     } else if (isFetchError) {
-      inputProps.icon = <Icon name='refresh' color='green' link onClick={this.startCrawl} />
+      iconElement = <Icon name='refresh' color='green' link onClick={this.startCrawl} />
     } else {
-      inputProps.icon = <Icon name='mobile' color='blue' />;
+      iconElement = <Icon name='mobile' color='blue' />;
     }
     return (
       <div>
-        <Input {...inputProps} />
+        <Input {...inputProps}>
+          <input ref={(input) => {this._input = input}} />
+          {iconElement}
+        </Input>
         {isFetchError && <Label basic color='red' pointing>Fetch content failed</Label>}
       </div>
     );

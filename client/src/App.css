@@ -6,12 +6,10 @@ body {
 .container {
   padding: 3em 0em;
   background-color: #fff; }
-
-.container .logo {
-  margin-bottom: 1em;
-  background-color: #183544;
-  padding: 1em 0;
-  border-radius: 10px; }
-
-.container .logo img {
-  margin-left: 1em; }
+  .container .logo {
+    margin-bottom: 1em;
+    background-color: #183544;
+    padding: 1em 0;
+    border-radius: 10px; }
+    .container .logo img {
+      margin-left: 1em; }

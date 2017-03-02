@@ -6,9 +6,13 @@ export function testUrl(url) {
 }
 
 function getTextFromQuery($, query) {
-  return $(query).map(function(index, element) {
+  const result = $(query).map(function() {
     return $(this).text();
   }).get();
+  if (result.length === 0) {
+    throw new Error('No result!');
+  }
+  return result;
 }
 
 function getPhoneName($) {
@@ -19,6 +23,20 @@ function getPhoneImg($) {
   return $('meta[property="og:image"]').attr('content');
 }
 
+function formatDotThousand(num) {
+  return num.toString().replace(/(?=(\d{3})+(?!\d))/g, '.');
+}
+
+function getPhonePrice($) {
+  const specialPrice = $('#special_price_box').text();
+  const currency = $('#special_currency_box').text();
+  if (specialPrice) {
+    return `${specialPrice} ${currency}`;
+  }
+  const prodPrice = $('#product_price').text();
+  return `${formatDotThousand(prodPrice)} ${currency}`;
+}
+
 export function parsePhoneData($) {
   const titles = getTextFromQuery($, 'table.specification-table td:first-child');
   const values = getTextFromQuery($, 'table.specification-table td:last-child');
@@ -27,7 +45,8 @@ export function parsePhoneData($) {
   });
   data.unshift(
     { title: 'Name', value: getPhoneName($) },
-    { title: 'Image', value: getPhoneImg($) }
+    { title: 'Image', value: getPhoneImg($) },
+    { title: 'Price', value: getPhonePrice($) }
   );
   return data;
 }
