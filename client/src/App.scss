@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: #f3f3f3;
+}
+
+.container {
+  padding: 3em 0em;
+  background-color: #fff;
+
+  .logo {
+    margin-bottom: 1em;
+    background-color: rgb(24, 53,	68);
+    padding: 1em 0;
+    border-radius: 10px;
+
+    img {
+      margin-left: 1em;
+    }
+  }
+}
